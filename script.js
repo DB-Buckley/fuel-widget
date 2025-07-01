@@ -1,22 +1,24 @@
-const sheetID = "1XaKAB1pMmD9cKu9uByJvo7PvAB1Pfl-m0QxwRJS5GfM";
-const sheetName = "Fuel Price Forecast";
-const url = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?sheet=${encodeURIComponent(sheetName)}`;
+
+const publicSheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQlR9zaL-9jbKA5TgzfRUYASiElCc_fIZ3BdfMmzt5_YPIzrGD4b5NXJHKfOPaTkkbH5SadjhOxwrrN/pub?output=csv";
 
 let fuelData = [];
 
 async function fetchFuelData() {
-  const response = await fetch(url);
-  const text = await response.text();
-  const jsonData = JSON.parse(text.substr(47).slice(0, -2));
-  const rows = jsonData.table.rows;
+  const response = await fetch(publicSheetURL);
+  const csvText = await response.text();
+  const rows = csvText.split("\n").slice(1); // skip header row
 
-  fuelData = rows.map(r => ({
-    type: r.c[0]?.v,
-    region: r.c[1]?.v,
-    previous: parseFloat(r.c[2]?.v),
-    current: parseFloat(r.c[3]?.v),
-    predicted: parseFloat(r.c[4]?.v)
-  })).filter(r => r.type && r.region);
+  fuelData = rows
+    .map(line => line.split(","))
+    .filter(cells => cells.length >= 5)
+    .map(cells => ({
+      type: cells[0].trim(),
+      region: cells[1].trim(),
+      previous: parseFloat(cells[2]),
+      current: parseFloat(cells[3]),
+      predicted: parseFloat(cells[4])
+    }))
+    .filter(row => row.type && row.region && !isNaN(row.current));
 
   populateDropdowns();
   updateDisplay();
@@ -82,7 +84,7 @@ async function updateExternalData() {
     document.getElementById("zarUsd").textContent = (1 / fxJson.rates.ZAR).toFixed(3);
 
     const oil = await fetch("https://api.api-ninjas.com/v1/oilprice?type=brent", {
-      headers: { 'X-Api-Key': 'demo' } // Replace with your API key if needed
+      headers: { 'X-Api-Key': 'demo' } // Replace 'demo' with your actual API key if needed
     });
     const oilJson = await oil.json();
     document.getElementById("brent").textContent = oilJson.price || "n/a";
