@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Fuel Price Forecast</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="fuelForecast">
+    <h2>⛽ Live Fuel Price Forecast</h2>
+    <div class="controls">
+      <select id="fuelType"></select>
+      <select id="region"></select>
+    </div>
+    <div id="priceInfo">
+      <p><strong>Previous Price:</strong> <span id="previousPrice">--</span> R/L</p>
+      <p><strong>Current Price:</strong> <span id="currentPrice">--</span> R/L</p>
+      <p><strong>Predicted Price:</strong> <span id="predictedPrice">--</span> R/L</p>
+      <p><strong>Change:</strong> <span id="priceChange">--</span> R <span id="arrow">➖</span></p>
+      <canvas id="trendChart" width="400" height="150"></canvas>
+      <p><strong>ZAR/USD:</strong> <span id="zarUsd">--</span></p>
+      <p><strong>Brent Crude:</strong> <span id="brent">--</span></p>
+      <p class="timestamp"><em>Last updated: <span id="timestamp">--</span></em></p>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
