@@ -7,8 +7,9 @@ body {
   color: #333;
   padding: 20px;
 }
+
 #fuelForecast {
-  max-width: 900px;
+  max-width: 600px;
   margin: 0 auto;
   background: white;
   padding: 20px;
@@ -16,59 +17,63 @@ body {
   box-shadow: 0 0 12px rgba(0, 0, 0, 0.05);
   border: 2px solid #F5A623;
 }
+
 .controls {
   display: flex;
   justify-content: center;
   gap: 20px;
   margin-bottom: 20px;
 }
+
 select {
   padding: 10px;
   border-radius: 6px;
   border: 1px solid #ccc;
 }
+
 #priceInfo {
   background-color: #f9f9f9;
   padding: 15px;
   border-radius: 8px;
 }
+
 #arrow {
   font-size: 1.5em;
 }
-.timestamp {
-  font-size: 0.85em;
-  color: #777;
-}
+
 .center-heading {
-    text-align: center;
-    color: #F5A623;
-    font-family: 'Manrope', sans-serif;
-  }
+  text-align: center;
+  color: #F5A623;
+  font-family: 'Manrope', sans-serif;
+  margin-bottom: 20px;
+}
+
 .selector {
   width: 200px;         
   color: #212121;
-  background: rgba(245, 166, 35, .1);
+  background: rgba(245, 166, 35, 0.1);
   border: 1px solid #ccc;
   padding: 8px;
   font-size: 16px;
   font-family: 'Manrope', sans-serif;
   font-weight: bold;
 }
+
 /* Flex container */
 .price-widget {
   display: flex;
-  justify-content: center;   /* horizontally center all boxes */
-  align-items: center;       /* vertically align content inside boxes */
-  gap: 20px;                 /* space between each price box */
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
   margin: 20px auto;
-  flex-wrap: wrap;           /* allows wrapping on smaller screens */
+  flex-wrap: wrap;
 }
 
 /* Generic price box styling */
 .price-box {
   width: 150px;
   height: 150px;
-  background-color: #f2f2f2; /* light gray background */
+  background-color: #f2f2f2;
   padding: 10px;
   text-align: center;
   display: flex;
@@ -80,7 +85,6 @@ select {
   font-size: 14px;
 }
 
-/* Specific styling for Current Price */
 .current-price {
   background-color: #F5A623;
   font-size: 18px;
@@ -88,6 +92,7 @@ select {
   color: #212121;
   box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.2);
 }
+
 .previous-price {
   background-color: #E0E0E0;
   color: #212121;
@@ -95,17 +100,19 @@ select {
 }
 
 .predicted-price {
-  background-color: #e0e0e0;
+  background-color: #E0E0E0;
   color: #212121;
   box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
 }
-#priceChangeInfo {
+
+/* Center the price change line */
+#priceChangeRow {
   text-align: center;
   font-size: 16px;
   margin-top: 20px;
 }
 
-/* Optional: Responsive tweak */
+/* Responsive tweaks */
 @media (max-width: 500px) {
   .price-box {
     width: 100%;
