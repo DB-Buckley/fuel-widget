@@ -61,7 +61,7 @@ function updateDisplay() {
   document.getElementById("currentPrice").textContent = match.current.toFixed(2);
   document.getElementById("predictedPrice").textContent = match.predicted.toFixed(2);
 
-  const diff = match.predicted - match.current;
+  const diff = match.current - match.previous;
   document.getElementById("priceChange").textContent = diff.toFixed(3);
   document.getElementById("arrow").textContent = diff < 0 ? "🟢⬇" : diff > 0 ? "🔴⬆" : "➖";
 }
