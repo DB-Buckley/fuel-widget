@@ -80,3 +80,23 @@ document.addEventListener("change", e => {
 
 fetchFuelData();
 setInterval(fetchFuelData, 60000); // Optional: auto-refresh every minute
+
+let deferredPrompt;
+const installButton = document.getElementById('installButton');
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  // Prevent the mini-infobar from appearing
+  e.preventDefault();
+  deferredPrompt = e;
+  installButton.style.display = 'block'; // Show custom install button
+});
+
+installButton.addEventListener('click', async () => {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    console.log(`User response to install: ${outcome}`);
+    deferredPrompt = null;
+    installButton.style.display = 'none';
+  }
+});
