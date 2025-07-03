@@ -112,6 +112,9 @@ select {
   margin-top: 20px;
 }
 
+#warning {
+  text-align: center;
+}
 /* Responsive tweaks */
 @media (max-width: 500px) {
   .price-box {
