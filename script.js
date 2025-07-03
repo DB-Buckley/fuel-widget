@@ -3,24 +3,28 @@ const publicSheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQlR9zaL
 let fuelData = [];
 
 async function fetchFuelData() {
-  const response = await fetch(publicSheetURL);
-  const csvText = await response.text();
-  const rows = csvText.split("\n").slice(1); // skip header row
+  try {
+    const response = await fetch(publicSheetURL);
+    const csvText = await response.text();
+    const rows = csvText.trim().split("\n").slice(1); // Skip header
 
-  fuelData = rows
-    .map(line => line.split(","))
-    .filter(cells => cells.length >= 5)
-    .map(cells => ({
-      type: cells[0].trim(),
-      region: cells[1].trim(),
-      previous: parseFloat(cells[2]),
-      current: parseFloat(cells[3]),
-      predicted: parseFloat(cells[4])
-    }))
-    .filter(row => row.type && row.region && !isNaN(row.current));
+    fuelData = rows
+      .map(line => line.split(","))
+      .filter(cells => cells.length >= 5)
+      .map(cells => ({
+        type: cells[0].trim(),
+        region: cells[1].trim(),
+        previous: parseFloat(cells[2]),
+        current: parseFloat(cells[3]),
+        predicted: parseFloat(cells[4])
+      }))
+      .filter(row => row.type && row.region && !isNaN(row.current));
 
-  populateDropdowns();
-  updateDisplay();
+    populateDropdowns();
+    updateDisplay();
+  } catch (err) {
+    console.error("❌ Failed to fetch or process fuel data:", err);
+  }
 }
 
 function populateDropdowns() {
@@ -36,31 +40,38 @@ function populateDropdowns() {
 function updateDisplay() {
   const type = document.getElementById("fuelType").value;
   const region = document.getElementById("region").value;
-
-  // Special case warning for Petrol 93 in Coastal regions
   const warning = document.getElementById("warning");
+
+  // ⚠️ Handle invalid combination
   if (type === "Petrol 93" && region.toLowerCase() === "coastal") {
     warning.textContent = "(Petrol 93 is NOT AVAILABLE in coastal regions)";
-    document.getElementById("previousPrice").textContent = "-";
-    document.getElementById("currentPrice").textContent = "-";
-    document.getElementById("predictedPrice").textContent = "-";
-    document.getElementById("priceChange").textContent = "-";
-    document.getElementById("arrow").textContent = "⚠️";
+    displayPlaceholders();
     return;
   } else {
     warning.textContent = "";
   }
 
   const match = fuelData.find(r => r.type === type && r.region === region);
-  if (!match) return;
+  if (!match) {
+    displayPlaceholders();
+    return;
+  }
 
   document.getElementById("previousPrice").textContent = match.previous.toFixed(2);
   document.getElementById("currentPrice").textContent = match.current.toFixed(2);
   document.getElementById("predictedPrice").textContent = match.predicted.toFixed(2);
 
-  const diff = match.current - match.previous;
+  const diff = match.predicted - match.current;
   document.getElementById("priceChange").textContent = diff.toFixed(3);
   document.getElementById("arrow").textContent = diff < 0 ? "🟢⬇" : diff > 0 ? "🔴⬆" : "➖";
+}
+
+function displayPlaceholders() {
+  document.getElementById("previousPrice").textContent = "--";
+  document.getElementById("currentPrice").textContent = "--";
+  document.getElementById("predictedPrice").textContent = "--";
+  document.getElementById("priceChange").textContent = "--";
+  document.getElementById("arrow").textContent = "➖";
 }
 
 document.addEventListener("change", e => {
@@ -68,4 +79,4 @@ document.addEventListener("change", e => {
 });
 
 fetchFuelData();
-setInterval(fetchFuelData, 60000);
+setInterval(fetchFuelData, 60000); // Optional: auto-refresh every minute
