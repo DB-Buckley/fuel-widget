@@ -3,10 +3,10 @@
   "name": "Mzansi Fuel Widget",
   "short_name": "Fuel Widget",
   "description": "Live South African fuel prices and predictions",
-  "start_url": "./index.html",
+  "start_url": "/fuel-widget/index.html",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#f5a623",
+  "theme_color": "#F5A623",
   "icons": [
     {
       "src": "icons/icon-192.png",
