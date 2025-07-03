@@ -128,3 +128,17 @@ select {
     align-items: stretch;
   }
 }
+
+.createdBy {
+  text-align: center;
+  font-size: 12px;
+}
+
+#logo {
+  max-height: 192px;
+  max-width: 192px;
+}
+
+#logoContainer {
+  text-align: center;
+}
