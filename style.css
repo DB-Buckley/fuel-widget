@@ -99,8 +99,10 @@ select {
   color: #212121;
   box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
 }
-.priceChangeInfo {
+#priceChangeInfo {
   text-align: center;
+  font-size: 16px;
+  margin-top: 20px;
 }
 
 /* Optional: Responsive tweak */
