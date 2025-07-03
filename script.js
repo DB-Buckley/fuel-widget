@@ -36,6 +36,21 @@ function populateDropdowns() {
 function updateDisplay() {
   const type = document.getElementById("fuelType").value;
   const region = document.getElementById("region").value;
+
+  // Special case warning for Petrol 93 in Coastal regions
+  const warning = document.getElementById("warning");
+  if (type === "Petrol 93" && region.toLowerCase() === "coastal") {
+    warning.textContent = "(Petrol 93 is NOT AVAILABLE in coastal regions)";
+    document.getElementById("previousPrice").textContent = "-";
+    document.getElementById("currentPrice").textContent = "-";
+    document.getElementById("predictedPrice").textContent = "-";
+    document.getElementById("priceChange").textContent = "-";
+    document.getElementById("arrow").textContent = "⚠️";
+    return;
+  } else {
+    warning.textContent = "";
+  }
+
   const match = fuelData.find(r => r.type === type && r.region === region);
   if (!match) return;
 
@@ -43,9 +58,7 @@ function updateDisplay() {
   document.getElementById("currentPrice").textContent = match.current.toFixed(2);
   document.getElementById("predictedPrice").textContent = match.predicted.toFixed(2);
 
-  // Calculate difference between current and previous prices
   const diff = match.current - match.previous;
-
   document.getElementById("priceChange").textContent = diff.toFixed(3);
   document.getElementById("arrow").textContent = diff < 0 ? "🟢⬇" : diff > 0 ? "🔴⬆" : "➖";
 }
