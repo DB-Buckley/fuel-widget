@@ -23,6 +23,16 @@
       <button id="installButton" style="display: none; margin: 20px auto; padding: 10px 20px; font-size: 1rem; border-radius: 8px; background-color: #F5A623; color: white; border: none; cursor: pointer;">
         Install Widget
       </button>
+    <div id="iosPrompt">
+      <div id="iosPromptBar">
+      📱 Install this app: Tap 
+      <span><strong>Share</strong> 
+        <img src="https://res.cloudinary.com/de7az0vxl/image/upload/v1751614892/Ios-Share--Streamline-Outlined-Material-Symbols_uga1df.png" alt="Share Icon"> 
+        then “<strong>Add to Home Screen</strong>”
+      </span>
+      </div>
+    </div>
+
     <div id="priceInfo">
       <div class="price-widget">
         <div class="price-box previous-price">
@@ -55,5 +65,19 @@
       .catch(error => console.error("❌ Service Worker failed", error));
   }
 </script>
+<script>
+  const isIos = /iphone|ipad|ipod/.test(navigator.userAgent.toLowerCase());
+  const isInStandalone = ('standalone' in window.navigator) && window.navigator.standalone;
+
+  if (isIos && !isInStandalone) {
+    const banner = document.getElementById('iosPrompt');
+    banner.style.display = 'block';
+
+    banner.addEventListener('click', () => {
+      banner.style.display = 'none';
+    });
+  }
+</script>
+  
 
 </body>
